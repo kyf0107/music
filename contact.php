@@ -18,21 +18,21 @@
 			<div class="col-md-12">
 				<nav class="navbar navbar-default" role="navigation">
 					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
 							 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
 						</button> <a class="navbar-brand" href="./">MUSIC@CYCU</a>
 					</div>
 					
-					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<div class="collapse navbar-collapse" id="navbar-collapse-1">
 						<ul class="nav navbar-nav">
 							<li>
 								<a href="./info.php">簡介</a>
 							</li>
-							<li class="active">
-								<a href="#">招生資訊</a>
-							</li>
 							<li>
-								<a href="./contact.php">連絡我們</a>
+								<a href="./recruit.php">招生資訊</a>
+							</li>
+							<li class="active">
+								<a href="#">連絡我們</a>
 							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
@@ -42,7 +42,17 @@
 						</ul>
 					</div>
 				</nav>
-				<CENTER><img src="./dist/picture/recruit.jpg" class="img-thumbnail" /></CENTER>
+				<div class="col-sm-offset-3 col-md-6">
+					<h1>
+						中原大學招生服務中心
+					</h1>
+					<p class="lead">
+						T: 03-265-2014</br>
+						F: 03-265-2019</br>
+						E-Mail: icare@cycu.edu.tw</br>
+						地址: 32023中壢市中北路200號
+					</p>
+				</div>
 			</div>
 		</div>
 	</div>

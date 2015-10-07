@@ -4,8 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>MUSIC</title>
-	<link href="./dist/css/bootstrap.min.css" rel="stylesheet">  
-	<link href="./dist/css/bootstrap-theme.min.css" rel="stylesheet">
+	<link href="./dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="./dist/css/navbar.css" rel="stylesheet">
   	
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
   	<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
@@ -32,7 +32,7 @@
 								<a href="./recruit.php">招生資訊</a>
 							</li>
 							<li>
-								<a href="#">連絡我們</a>
+								<a href="./contact.php">連絡我們</a>
 							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
@@ -41,7 +41,6 @@
 							</li>
 						</ul>
 					</div>
-					
 				</nav>
 				<div class="jumbotron">
 					<h2>
