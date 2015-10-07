@@ -42,7 +42,7 @@
 						</ul>
 					</div>
 				</nav>
-				<div class="jumbotron">
+				<div class="col-md-6 jumbotron">
 					<h2>
 						<strong>數位音樂學程</strong>
 					</h2>
@@ -61,30 +61,32 @@
 						<a class="btn btn-primary btn-large" href="#">Learn more</a>
 					</p>
 				</div>
-				<ul class="nav nav-tabs">
-					<li role="presentation" class="active"><a href="#">News</a></li>
-					<li role="presentation"><a href="#">More</a></li>
-				</ul>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>
-								#
-							</th>
-							<th>
-								Title
-							</th>
-							<th>
-								Time
-							</th>
-							<th>
-								Pin
-							</th>
-						</tr>
-					</thead>
-					<tbody id="t_body">
-					</tbody>
-				</table>
+				<div class="col-md-6">
+					<ul class="nav nav-tabs">
+						<li role="presentation" class="active"><a href="#">News</a></li>
+						<li role="presentation"><a href="#">More</a></li>
+					</ul>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>
+									#
+								</th>
+								<th>
+									Title
+								</th>
+								<th>
+									Time
+								</th>
+								<th>
+									Pin
+								</th>
+							</tr>
+						</thead>
+						<tbody id="t_body">
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
