@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Contact</title>
+	<title>Collections</title>
 	<link href="./dist/css/bootstrap.min.css" rel="stylesheet">  
 	<link href="./dist/css/navbar.css" rel="stylesheet">
   	
@@ -32,10 +32,10 @@
 							<li>
 								<a href="./recruit.php">招生資訊</a>
 							</li>
-							<li>
+							<li class="active">
 								<a href="./collection.php">作品集</a>
 							</li>
-							<li class="active">
+							<li>
 								<a href="./contact.php">連絡我們</a>
 							</li>
 							<li>
@@ -78,37 +78,8 @@
 						</ul>
 					</div>
 				</nav>
-				<div class="col-sm-offset-2 col-md-8 thumbnail" style="background: rgba(255, 255, 255, 0.9);">
-					<div class="col-sm-offset-5 col-md-2" id="spin"></div>
-					<div id="carousel" class="carousel slide" id="carousel" data-ride="carousel" style="display: none">
-					  <!-- Indicators -->
-					  <ol class="carousel-indicators" id="indicators">
-					  </ol>
-
-					  <!-- Wrapper for slides -->
-					  <div class="carousel-inner" role="listbox" id="inner">
-					  </div>
-
-					  <!-- Controls -->
-					  <a class="left carousel-control" href="#carousel" role="button" data-slide="prev">
-					    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-					    <span class="sr-only">Previous</span>
-					  </a>
-					  <a class="right carousel-control" href="#carousel" role="button" data-slide="next">
-					    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-					    <span class="sr-only">Next</span>
-					  </a>
-					</div>
-					<!--<img alt="cover" src="./dist/picture/DSC_3949.JPG">-->
-					<h1>
-						中原大學招生服務中心
-					</h1>
-					<p class="lead">
-						T: 03-265-2014</br>
-						F: 03-265-2019</br>
-						E-Mail: icare@cycu.edu.tw</br>
-						地址: 32023中壢市中北路200號
-					</p>
+				<div class="col-md-2 col-md-offset-5" id="spin"></div>
+				<div class="row" id="collection_div" style="display:none">
 				</div>
 			</div>
 		</div>
@@ -117,7 +88,7 @@
 <script>
 	$(document).ready(function() {
 		spin();
-		getContact();
+		getCollection();
 	});
 
 	function spin() {
@@ -142,29 +113,23 @@
 	    var spinner = new Spinner(opts).spin(target);
 	};
 
-	function getContact() {
+	function getCollection() {
 		$.ajax({
-			url: 'getContact.php',
+			url: 'getCollection.php',
 			type: 'POST',
 			dataType: 'json',
 			complete: function() {
 				$('#spin').remove();
-				$('#carousel').show("clip");
+				$('#collection_div').show("clip");
 			},
 			success: function(data) {
 				for ( var i = 0 ; i < data.length ; i++ ) {
-					if ( i == 0 ) {
-						$('#indicators').append('<li data-target="#carousel" data-slide-to="0" class="active"></li>');
-						$('#inner').append('<div class="item active"><img src="'+ data[i]["url"] +'" alt="Pic0"><div class="carousel-caption">'+ data[i]["title"] +'</div></div>');
-					}
-					else  {
-						$('#indicators').append('<li data-target="#carousel" data-slide-to="'+ i +'"></li>');
-						$('#inner').append('<div class="item"><img src="'+ data[i]["url"] +'" alt="Pic'+ i +'"><div class="carousel-caption">'+ data[i]["title"] +'</div></div>');
-					}
+					$('#collection_div').append('<div class="col-md-6"><div class="thumbnail"><img alt="Bootstrap Thumbnail First" src="'+ data[i]["url"] +'" /><div class="caption"><h3>'+ data[i]["title"] +'</h3><p>'+ data[i]["intro"] +'</p><p><a class="btn btn-default" href="indexCollection.php?id='+ data[i]["cid"] +'">View</a></p></div></div></div>');
+
 				} // for
 			},
 			error: function(data) {
-				$('#t_body').append('<CENTER>No result</CENTER>');
+				$('#collection_div').append('<CENTER>No result</CENTER>');
 			}
 		});
 	};

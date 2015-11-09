@@ -1,10 +1,15 @@
+<?php
+	session_start();
+	if ( !isset( $_SESSION['username'] ) )
+		echo "<script>alert('請登入'); location.href='./';</script>";
+?>
 <!DOCTYPE html>
 <html lang="ch">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Recruit</title>
-	<link href="./dist/css/bootstrap.min.css" rel="stylesheet">  
+	<title>Collection Editor</title>
+	<link href="./dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="./dist/css/navbar.css" rel="stylesheet">
   	
   	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -13,6 +18,7 @@
   	<script type="text/javascript" src="./dist/js/bootstrap.min.js"></script>
   	<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 </head>
+
 <body style="padding-top: 70px">
 	<div class="container-fluid">
 		<div class="row">
@@ -29,7 +35,7 @@
 							<li>
 								<a href="./info.php">簡介</a>
 							</li>
-							<li class="active">
+							<li>
 								<a href="./recruit.php">招生資訊</a>
 							</li>
 							<li>
@@ -49,40 +55,47 @@
 							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
-							<li>
-								<?php
-									session_start();
-									if ( !isset( $_SESSION['username'] ) )
-										echo "<a href='./login.php'>登入&nbsp;&nbsp;</a>";
-									else {
-										echo "<a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>工具 <span class='glyphicon glyphicon-cog'></span>&nbsp;</a>
-								        <ul class='dropdown-menu'>
-								            <li><a href='./manager.php'>管理員</a></li>
-								            <li role='separator' class='divider'></li>
-								            <li><a href='./post.php?type=1'>新增公告</a></li>
-								            <li><a href='./editor.php?type=1'>公告編輯</a></li>
-								            <li><a href='./editor.php?type=2'>課程編輯</a></li>
-								            <li><a href='./teacherEditor.php'>師資編輯</a></li>
-								            <li><a href='recruitEditor.php'>招生資訊編輯</a></li>
-								            <li><a href='collectionEditor.php'>上傳作品</a></li>
-								            <li><a href='contactEditor.php'>聯絡方式編輯</a></li>
-								            <li><a href='showEditor.php'>節目表編輯</a></li>
-								            <li role='separator' class='divider'></li>
-								            <li><a href='./logout.php'>登出</a></li>
-								        </ul>";
-									}
-
-								?>
-								<!--<a href="./login.php">登入</a>-->
-							</li>
+							<li class="dropdown">
+						        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">工具 <span class="glyphicon glyphicon-cog"></span>&nbsp;</a>
+						        <ul class="dropdown-menu">
+						            <li><a href="./manager.php">管理員</a></li>
+						            <li role="separator" class="divider"></li>
+						            <li><a href="./post.php?type=1">新增公告</a></li>
+						            <li><a href="./editor.php?type=1">公告編輯</a></li>
+						            <li><a href="./editor.php?type=2">課程編輯</a></li>
+						            <li><a href="./teacherEditor.php">師資編輯</a></li>
+						            <li><a href="./recruitEditor.php">招生資訊編輯</a></li>
+						            <li><a href="./collectionEditor.php">上傳作品</a></li>
+						            <li><a href="./contactEditor.php">聯絡方式編輯</a></li>
+						            <li><a href="./showEditor.php">節目表編輯</a></li>
+						            <li role="separator" class="divider"></li>
+						            <li><a href="./logout.php">登出</a></li>
+						        </ul>
+					        </li>
 						</ul>
 					</div>
 				</nav>
-				<div class="col-md-2 col-md-offset-5" id="spin"></div>
-				<div class="col-md-12" id="all_div" style="display:none">
-					<div class="col-md-1" id="selector"></div>
-					<div class="col-md-10" id="recruit_div">
-						<!--<CENTER><img alt="before-college" src="./dist/picture/recruit.jpg"></CENTER>-->
+				<div class="col-md-8 col-md-offset-2" style="background: rgba(255, 255, 255, 0.9);">
+					<CENTER><h1>Collection Editor</h1><a class="btn btn-default btn-lg" href="addCollection.php">新增作品 <span class="glyphicon glyphicon-plus"></span></a></CENTER></br></br>
+					<div class="col-md-2 col-md-offset-5" id="spin"></div>
+					<div class="row" id="collection_div" style="display:none">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>
+										#
+									</th>
+									<th>
+										Title
+									</th>
+									<th>
+										Author
+									</th>
+								</tr>
+							</thead>
+							<tbody id="t_body">
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -92,7 +105,7 @@
 <script>
 	$(document).ready(function() {
 		spin();
-		getRecruit( 0 );
+		getCollection();
 	});
 
 	function spin() {
@@ -117,36 +130,27 @@
 	    var spinner = new Spinner(opts).spin(target);
 	};
 
-	function getRecruit(index) {
+	function getCollection() {
 		$.ajax({
-			url: 'getRecruit.php',
+			url: 'getCollection.php',
 			type: 'POST',
 			dataType: 'json',
 			complete: function() {
 				$('#spin').remove();
-				$('#all_div').show("clip");
+				$('#collection_div').show("clip");
 			},
 			success: function(data) {
 				for ( var i = 0 ; i < data.length ; i++ ) {
-					$('#selector').append('<button class="btn btn-default recruit-btn" id="btn_'+ data[i]["rid"] +'" value="'+ i +'">'+ data[i]["title"] +'</button></br></br>');
-					if ( i == index ) {
-						$('#recruit_div').append('<CENTER><img alt="recruit" src="'+ data[i]["url"] +'" style="max-width: 100%"></CENTER>');
-						$('#btn_'+ data[i]["rid"]).attr("disabled", "disabled");
-					} // if
+					$('#t_body').append('<tr id="tr'+ i + '"><td>' + data[i]["cid"] + '</td><td><a href="./editCollection.php?id=' + data[i]["cid"] + '">' + data[i]["title"] + '</a></td><td>' + data[i]["author"] + '</td></tr>');
+
+					if ( i % 2 != 0 )
+						$('#tr' + i ).addClass("success");
 				} // for
 			},
 			error: function(data) {
-				$('#all_div').append('<CENTER>No result</CENTER>');
+				$('#t_body').append('<CENTER>No result</CENTER>');
 			}
 		});
 	};
-
-	$(document).delegate('.recruit-btn', 'click', function() {
-		$('#all_div').hide("drop");
-		$('#selector').empty();
-		$('#recruit_div').empty();
-		var id = parseInt( $(this).val() );
-		getRecruit( id );
-	});
 </script>
 </html>

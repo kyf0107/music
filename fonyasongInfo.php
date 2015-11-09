@@ -46,7 +46,7 @@
 					
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
-							<li class="active">
+							<li>
 								<a href="./info.php">簡介</a>
 							</li>
 							<li>
@@ -61,7 +61,7 @@
 							<li>
 								<a href="./sourceLink.php">參考連結</a>
 							</li>
-							<li>
+							<li class="active">
 								<a href="./fonyasongInfo.php">風雅頌</a>
 							</li>
 							<li>
@@ -101,20 +101,17 @@
 				<div class="col-md-10 col-md-offset-1" style="background: rgba(255, 255, 255, 0.8);">
 					<ul class="nav nav-tabs nav-justified" role="tablist">
 						<li role="presentation"  class="active">
-							<a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a>
+							<a href="#home" aria-controls="home" role="tab" data-toggle="tab">Introduce</a>
 						</li>
 						<li>
-							<a href="#class" aria-controls="class" role="tab" data-toggle="tab">Class</a>
-						</li>
-						<li style="background: rgba(255, 255, 255, 0.9);">
-							<a href="#teacher" aria-controls="teacher" role="tab" data-toggle="tab">Teacher</a>
+							<a href="#show" aria-controls="show" role="tab" data-toggle="tab">Shows</a>
 						</li>
 					</ul>
 					<div class="tab-content">
 						<div role="tabpanel" class="tab-pane fade in active" id="home">
 							<div style="background-color:#e67e22; color:white;">
 								<h1>
-									<CENTER></br><strong>學士後數位音樂應用學士學位學程簡介</strong></br></br></CENTER>
+									<CENTER></br><strong>風雅頌簡介</strong></br></br></CENTER>
 								</h1>
 							</div>
 							<p class="lead">
@@ -141,24 +138,38 @@
 								&nbsp;&nbsp;&nbsp;&nbsp;(5) 音樂表演：錄音室樂手、樂團(古典、現代、跨界、流行)、歌手(流行歌手、錄音室Demo歌手)等。</br>
 
 							</p>
-						</div>
-						<div role="tabpanel" class="tab-pane fade" id="class">
 							<div style="background-color:#e67e22; color:white;">
 								<h1>
-									<CENTER></br><strong>課程介紹</strong></br></br></CENTER>
+									<CENTER></br><strong>聯絡方式</strong></br></br></CENTER>
 								</h1>
 							</div>
-							<div class="col-md-2 col-md-offset-5" id="class_spin"></div>
-							<div id="class_div" style="display:none"></div>
 						</div>
-						<div role="tabpanel" class="tab-pane fade" id="teacher">
+						<div role="tabpanel" class="tab-pane fade" id="show">
 							<div style="background-color:#e67e22; color:white;">
 								<h1>
-									<CENTER></br><strong>師資介紹</strong></br></br></CENTER>
+									<CENTER></br><strong>節目表</strong></br></br></CENTER>
 								</h1>
 							</div>
-							<div class="col-md-2 col-md-offset-5" id="teacher_spin"></div>
-							<div class="row" id="teacher_div" style="display:none"></div>
+							<div class="col-md-2 col-md-offset-5" id="show_spin"></div>
+							<div id="show_div" style="display:none">
+								<table class="table">
+									<thead>
+										<tr>
+											<th style="width: 10%">
+												#
+											</th>
+											<th style="width: 45%">
+												Title
+											</th>
+											<th style="width: 45%">
+												Time
+											</th>
+										</tr>
+									</thead>
+									<tbody id="showT_body">
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -184,8 +195,7 @@
 <script>
 	$(document).ready(function() {
 		spin();
-		getGroup();
-		getTeacher();
+		getShow();
 	});
 
 	function spin() {
@@ -206,107 +216,28 @@
             top: 25, // Top position relative to parent in px
             left: 25 // Left position relative to parent in px
         };
-	    var target = document.getElementById('class_spin');
-	    var spinner = new Spinner(opts).spin(target);
-	    var target = document.getElementById('teacher_spin');
+	    var target = document.getElementById('show_spin');
 	    var spinner = new Spinner(opts).spin(target);
 	};
 
-	function getTeacher() {
+	function getShow() {
 		$.ajax({
-			url: 'getTeacher.php',
+			url: 'getShow.php',
 			type: 'POST',
 			dataType: 'json',
 			complete: function() {
-				$('#teacher_spin').remove();
-				$('#teacher_div').show("clip");
+				$('#show_spin').remove();
+				$('#show_div').show("clip");
 			},
 			success: function(data) {
 				for ( var i = 0 ; i < data.length ; i++ ) {
-					$('#teacher_div').append('<div class="col-md-3"><div class="thumbnail"><a href="#modal_teacher'+ i +'" role="button" class="btn" data-toggle="modal"><img alt="teacher'+ i +'" class="img-rounded" src="'+ data[i]["url"] +'" /></a><div class="caption"><p>Teacher '+ data[i]["name"] +'</p></div></div></div>');
-					$('#all_div').append('<div class="modal fade" id="modal_teacher'+ i +'" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h4 class="modal-title" id="myModalLabel">Teacher '+ data[i]["name"] +'</h4></div><div class="modal-body"><img alt="teacher'+ i +'" class="img-rounded" src="'+ data[i]["url"] +'" style="width: 100%" /><p>'+ data[i]["adj"] +'</p><p>'+ data[i]["special"] +'</p></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div></div></div></div>');
+					$('#showT_body').append('<tr id="tr'+ i + '"><td>' + i + '</td><td>' + data[i]["title"] + '</td><td>' + data[i]["time"] + '</td></tr>');
 				} // for
 			},
 			error: function(data) {
-				$('#t_body').append('<CENTER>No result</CENTER>');
+				$('#show').append('<CENTER>No result</CENTER>');
 			}
 		});
 	};
-
-	function getGroup() {
-		$.ajax({
-			url: 'getClass.php',
-			data: {type: 1},
-			type: 'GET',
-			dataType: 'json',
-			success: function(data) {
-				$('#class_div').append('<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"></div>');
-				for ( var i = 0 ; i < data.length ; i++ ) {
-					$('#accordion').append('<div class="panel panel-default" id="group'+ data[i]["gid"] +'"><div class="panel-heading" role="tab" id="heading'+ data[i]["gid"] +'"><h4 class="panel-title"><a role="button" style="color:white;" data-toggle="collapse" data-parent="#accordion" href="#collapse'+ data[i]["gid"] +'" aria-expanded="true" aria-controls="collapse'+ data[i]["gid"] +'">'+ data[i]["gname"] +'</a></h4></div>')
-					
-					if ( i == 0 )
-						$('#group'+ data[i]["gid"]).append('<div id="collapse'+ data[i]["gid"] +'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+ data[i]["gid"] +'"><div id="panel'+ data[i]["gid"] +'" class="panel-body"></div></div>');
-					else
-						$('#group'+ data[i]["gid"]).append('<div id="collapse'+ data[i]["gid"] +'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+ data[i]["gid"] +'"><div id="panel'+ data[i]["gid"] +'" class="panel-body"></div></div>');
-					
-				} // for
-				getCategory();
-			},
-			error: function(data) {
-				$('#class_spin').remove();
-				$('#class').append('<CENTER>No result</CENTER>');
-			}
-		});
-	};
-
-	function getCategory() {
-		$.ajax({
-			url: 'getClass.php',
-			data: {type: 2},
-			type: 'GET',
-			dataType: 'json',
-			success: function(data) {
-				for ( var i = 0 ; i < data.length ; i++ ) {
-					$('#panel'+ data[i]["gid"]).append('<div class="col-md-4"><div class="panel panel-default" style="border: 5px solid #d35400"><div class="panel-heading" style="border-radius: 0px; color:white;"><h3><CENTER><strong>'+ data[i]["caname"] +'</strong></CENTER></h3></div><div><div class="panel-body" id="g'+ data[i]["gid"] +'-ca'+ data[i]["caid"] +'"></div></div></div></div>');
-
-				} // for
-				getClass();
-			},
-			error: function(data) {
-				$('#class_spin').remove();
-				$('#panel'+ data[i]["gid"]).append('<CENTER>No result</CENTER>');
-			}
-		});
-	};
-
-	function getClass() {
-		$.ajax({
-			url: 'getClass.php',
-			data: {type: 3},
-			type: 'GET',
-			dataType: 'json',
-			complete: function() {
-				$('#class_spin').remove();
-				$('#class_div').show("clip");
-			},
-			success: function(data) {
-				for ( var i = 0 ; i < data.length ; i++ ) {
-					if ( data[i]["description"] != "" && data[i]["url"] != "" )
-						$('#g'+ data[i]["gid"] +'-ca'+ data[i]["caid"]).append('<a href="#myModal" data-toggle="modal" data-des="'+ data[i]["description"] +'" data-url="'+ data[i]["url"] +'">'+ data[i]["clname"] +'</br>');
-					else
-						$('#g'+ data[i]["gid"] +'-ca'+ data[i]["caid"]).append(data[i]["clname"] +'</br>');
-				} // for
-			},
-			error: function(data) {
-				$('#g'+ data[i]["gid"] +'-ca'+ data[i]["caid"]).append('<CENTER>No result</CENTER>');
-			}
-		});
-	};
-
-	$('#myModal').on('show.bs.modal', function(e) {
-		var button = $(e.relatedTarget);
-		$('#myModalLabel').html( button.data('des') );
-		$('#myModalBody').html('<img src="'+ button.data('url') +'" alt="'+ button.data('des') +'" style="width: 100%">');
-	});
 </script>
 </html>
